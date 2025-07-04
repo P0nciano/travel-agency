@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client'
 import { Router } from 'express'
 import { z } from 'zod'
 import nodemailer from 'nodemailer'
+import { verificaToken } from '../middlewares/verificaToken'
 
 const prisma = new PrismaClient()
 const router = Router()
@@ -13,7 +14,7 @@ const reservaSchema = z.object({
   status: z.string().min(1, { message: "Status é obrigatório" }),
 })
 
-// GET - listar todas as reservas
+// GET - listar todas as reservas (sem token)
 router.get("/", async (req, res) => {
   try {
     const reservas = await prisma.reserva.findMany({
@@ -25,8 +26,8 @@ router.get("/", async (req, res) => {
   }
 })
 
-// POST - criar nova reserva com envio de email automático
-router.post("/", async (req, res) => {
+// POST - criar reserva com envio de email e log
+router.post("/", verificaToken, async (req: any, res) => {
   const valida = reservaSchema.safeParse(req.body)
   if (!valida.success) return res.status(400).json({ erro: valida.error })
 
@@ -52,8 +53,15 @@ router.post("/", async (req, res) => {
       prisma.viagem.update({
         where: { id: viagemId },
         data: { vagasDisponiveis: { decrement: quantidadePessoas } }
-      })
+      }),
     ])
+
+    await prisma.log.create({
+      data: {
+        acao: `Reserva criada (ID: ${reserva.id})`,
+        usuarioId: req.usuario.id
+      }
+    })
 
     const clienteComReservas = await prisma.cliente.findFirst({
       where: { id: clienteId },
@@ -76,8 +84,8 @@ router.post("/", async (req, res) => {
   }
 })
 
-// PUT - atualizar uma reserva
-router.put("/:id", async (req, res) => {
+// PUT - atualizar reserva + log
+router.put("/:id", verificaToken, async (req: any, res) => {
   const { id } = req.params
   const valida = reservaSchema.safeParse(req.body)
   if (!valida.success) return res.status(400).json({ erro: valida.error })
@@ -116,14 +124,21 @@ router.put("/:id", async (req, res) => {
       })
     ])
 
+    await prisma.log.create({
+      data: {
+        acao: `Reserva editada (ID: ${id})`,
+        usuarioId: req.usuario.id
+      }
+    })
+
     res.status(200).json({ reserva: reservaAtualizada, viagem: viagemAtualizada })
   } catch (error) {
     res.status(400).json({ erro: error instanceof Error ? error.message : error })
   }
 })
 
-// DELETE - remover uma reserva
-router.delete("/:id", async (req, res) => {
+// DELETE - remover reserva + log
+router.delete("/:id", verificaToken, async (req: any, res) => {
   const { id } = req.params
 
   try {
@@ -138,12 +153,20 @@ router.delete("/:id", async (req, res) => {
       })
     ])
 
+    await prisma.log.create({
+      data: {
+        acao: `Reserva excluída (ID: ${id})`,
+        usuarioId: req.usuario.id
+      }
+    })
+
     res.status(200).json({ reserva, viagem })
   } catch (error) {
     res.status(400).json({ erro: error instanceof Error ? error.message : error })
   }
 })
 
+// Função para montar e-mail
 function gerarTabelaHTML(dados: any, mostrarPessoas = true) {
   let html = `
     <html>
@@ -184,6 +207,7 @@ function gerarTabelaHTML(dados: any, mostrarPessoas = true) {
   return html
 }
 
+// Transporter configurado (exemplo com Mailtrap)
 const transporter = nodemailer.createTransport({
   host: "sandbox.smtp.mailtrap.io",
   port: 587,
@@ -208,7 +232,7 @@ async function enviaEmail(dados: any) {
   console.log("E-mail enviado:", info.messageId)
 }
 
-
+// GET - Enviar e-mail de relatório
 router.get("/email/:id", async (req, res) => {
   const { id } = req.params
 
@@ -230,9 +254,9 @@ router.get("/email/:id", async (req, res) => {
 
     await enviaEmail(cliente)
 
-    res.status(200).json(cliente)
+    res.status(200).json({ mensagem: "E-mail enviado com sucesso" })
   } catch (error) {
-    res.status(500).json({ erro: error })
+    res.status(500).json({ erro: error instanceof Error ? error.message : error })
   }
 })
 

@@ -1,0 +1,166 @@
+{
+  "usuarios": [
+    {
+      "bloqueado": false,
+      "ultimoLogin": "2025-07-04T16:04:55.142Z",
+      "id": 1,
+      "nome": "Carlos Souza",
+      "email": "carlos.souza@exemplo.com",
+      "senha": "$2b$10$FxX90cAjEliMgYsAkAfKnuIsacscWC6VM/5vg33FthLBonuKyXPoS",
+      "status": "INATIVO",
+      "nivelAcesso": "comum",
+      "codigoAtivacao": "IIVVRO",
+      "tentativasLogin": 0
+    },
+    {
+      "bloqueado": false,
+      "ultimoLogin": null,
+      "id": 7,
+      "nome": "Felipe",
+      "email": "Felipe@email.com",
+      "senha": "$2b$10$LEWd1Yff26te6DOiaTUWJedvFT0djr3AHlPHw9bPHvby7/vuX1dbG",
+      "status": "ATIVO",
+      "nivelAcesso": "comum",
+      "codigoAtivacao": "Q5GFVO",
+      "tentativasLogin": 0
+    }
+  ],
+  "clientes": [
+    {
+      "id": 3,
+      "nome": "Joao Daniel ",
+      "email": "Joao@gmail.com",
+      "telefone": "888888888855"
+    },
+    {
+      "id": 5,
+      "nome": "Joao Antonio Amaral ",
+      "email": "JoaoANTONIO@gmail.com",
+      "telefone": "898989898"
+    },
+    {
+      "id": 6,
+      "nome": "Felipe Almeida ",
+      "email": "FelipeAl@email.com",
+      "telefone": "2213321232"
+    },
+    {
+      "id": 8,
+      "nome": "Felipe Ponciano ",
+      "email": "Ponciano@email.com",
+      "telefone": "4282919302"
+    }
+  ],
+  "viagens": [
+    {
+      "id": 1,
+      "descricao": " Viagem para O Rio de Janeiro - Pacote com hospedagem e passeios inclusos",
+      "dataPartida": "2025-08-10T10:00:00.000Z",
+      "valor": "1899.9",
+      "vagasDisponiveis": 18
+    }
+  ],
+  "reservas": [
+    {
+      "id": 2,
+      "dataReserva": "2025-07-04T15:15:44.281Z",
+      "quantidadePessoas": 2,
+      "valorTotal": "3799.8",
+      "status": "CONFIRMADA",
+      "clienteId": 3,
+      "viagemId": 1
+    }
+  ],
+  "logs": [
+    {
+      "id": 1,
+      "usuarioId": 1,
+      "acao": "Login efetuado",
+      "dataHora": "2025-07-04T14:38:50.353Z"
+    },
+    {
+      "id": 2,
+      "usuarioId": 1,
+      "acao": "Criação de cliente: Felipe Ponciano ",
+      "dataHora": "2025-07-04T14:51:22.638Z"
+    },
+    {
+      "id": 3,
+      "usuarioId": 1,
+      "acao": "Exclusão de cliente: ID 1",
+      "dataHora": "2025-07-04T15:08:49.525Z"
+    },
+    {
+      "id": 4,
+      "usuarioId": 1,
+      "acao": "Edição de cliente: ID 3",
+      "dataHora": "2025-07-04T15:09:42.999Z"
+    },
+    {
+      "id": 5,
+      "usuarioId": 1,
+      "acao": "Criação de viagem: Pacote com hospedagem e passeios inclusos",
+      "dataHora": "2025-07-04T15:11:22.701Z"
+    },
+    {
+      "id": 6,
+      "usuarioId": 1,
+      "acao": "Edição de viagem: ID 1",
+      "dataHora": "2025-07-04T15:12:22.991Z"
+    },
+    {
+      "id": 7,
+      "usuarioId": 1,
+      "acao": "Criação de viagem: Pacote turístico com hotel 4 estrelas e city tour incluso",
+      "dataHora": "2025-07-04T15:13:00.398Z"
+    },
+    {
+      "id": 8,
+      "usuarioId": 1,
+      "acao": "Exclusão de viagem: ID 2",
+      "dataHora": "2025-07-04T15:13:07.095Z"
+    },
+    {
+      "id": 9,
+      "usuarioId": 1,
+      "acao": "Reserva criada (ID: 1)",
+      "dataHora": "2025-07-04T15:14:16.450Z"
+    },
+    {
+      "id": 10,
+      "usuarioId": 1,
+      "acao": "Reserva editada (ID: 1)",
+      "dataHora": "2025-07-04T15:15:25.432Z"
+    },
+    {
+      "id": 11,
+      "usuarioId": 1,
+      "acao": "Reserva criada (ID: 2)",
+      "dataHora": "2025-07-04T15:15:44.289Z"
+    },
+    {
+      "id": 12,
+      "usuarioId": 1,
+      "acao": "Reserva excluída (ID: 1)",
+      "dataHora": "2025-07-04T15:15:56.796Z"
+    },
+    {
+      "id": 13,
+      "usuarioId": 1,
+      "acao": "Login efetuado",
+      "dataHora": "2025-07-04T15:16:15.817Z"
+    },
+    {
+      "id": 14,
+      "usuarioId": 7,
+      "acao": "Conta ativada",
+      "dataHora": "2025-07-04T16:03:35.214Z"
+    },
+    {
+      "id": 15,
+      "usuarioId": 1,
+      "acao": "Login efetuado",
+      "dataHora": "2025-07-04T16:04:55.161Z"
+    }
+  ]
+}

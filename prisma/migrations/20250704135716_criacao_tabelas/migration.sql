@@ -33,8 +33,38 @@ CREATE TABLE `Reserva` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `Usuario` (
+    `bloqueado` BOOLEAN NOT NULL DEFAULT false,
+    `ultimoLogin` DATETIME(3) NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `nome` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `senha` VARCHAR(191) NOT NULL,
+    `status` VARCHAR(191) NOT NULL DEFAULT 'INATIVO',
+    `nivelAcesso` VARCHAR(191) NOT NULL DEFAULT 'comum',
+    `codigoAtivacao` VARCHAR(191) NULL,
+    `tentativasLogin` INTEGER NOT NULL DEFAULT 0,
+
+    UNIQUE INDEX `Usuario_email_key`(`email`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Log` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `usuarioId` INTEGER NOT NULL,
+    `acao` VARCHAR(191) NOT NULL,
+    `dataHora` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `Reserva` ADD CONSTRAINT `Reserva_clienteId_fkey` FOREIGN KEY (`clienteId`) REFERENCES `Cliente`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Reserva` ADD CONSTRAINT `Reserva_viagemId_fkey` FOREIGN KEY (`viagemId`) REFERENCES `Viagem`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Log` ADD CONSTRAINT `Log_usuarioId_fkey` FOREIGN KEY (`usuarioId`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
